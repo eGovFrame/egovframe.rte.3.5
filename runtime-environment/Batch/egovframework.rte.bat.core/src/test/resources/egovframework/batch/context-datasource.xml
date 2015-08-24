@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/jdbc  http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd">
+
+	<context:annotation-config/> 
+		
+	<bean id="egov.propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:/egovframework/batch/properties/globals.properties</value>
+            </list>
+        </property>
+    </bean>
+    
+<!--     <jdbc:embedded-database id="dataSource" type="H2">
+        <jdbc:script location= "classpath:/testdata/sampledb.script"/>
+    </jdbc:embedded-database> -->
+    
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${Globals.DriverClassName}"/>
+		<property name="url" value="${Globals.Url}" />
+		<property name="username" value="${Globals.UserName}"/>
+		<property name="password" value="${Globals.Password}"/>
+	</bean>
+	
+	<bean id="sequenceIncrementerParent" class="${Globals.Incrementer}" abstract="true">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="columnIncrementerParent" class="${Globals.Incrementer}" abstract="true" parent="sequenceIncrementerParent">
+		<property name="columnName" value="ID" />
+	</bean>
+
+	<bean id="incrementerParent" parent="${Globals.Incrementer.parent}">
+		<property name="incrementerName" value="DUMMY"/>
+	</bean>
+
+	<bean id="lobHandler" class="${Globals.Lobhandler}"/>
+</beans>

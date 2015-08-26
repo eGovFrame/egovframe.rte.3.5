@@ -27,5 +27,5 @@
  - spring-modules-validation : 입력유효성
  
 ## 빌드방법
- 전체빌드 : 메인에 있는 pom.xml을 mvn install 수행
- 개별빌드 : 디렉터리 안에 pom.xml 을 직접 mvn install 실행
+전체빌드 : 메인에 있는 pom.xml을 mvn install 수행
+개별빌드 : 디렉터리 안에 pom.xml 을 직접 mvn install 실행
